@@ -183,6 +183,9 @@ static const void *kPBInfiniteScrollStateKey = &kPBInfiniteScrollStateKey;
     if(state.initialized) {
         return;
     }
+    
+    PBSwizzleMethod(self, @selector(setContentOffset:), @selector(pb_setContentOffset:));
+    PBSwizzleMethod(self, @selector(setContentSize:), @selector(pb_setContentSize:));
 
     // Add pan guesture handler
     [self.panGestureRecognizer addTarget:self action:@selector(pb_handlePanGesture:)];
@@ -198,6 +201,9 @@ static const void *kPBInfiniteScrollStateKey = &kPBInfiniteScrollStateKey;
     if(!state.initialized) {
         return;
     }
+    
+    PBSwizzleMethod(self, @selector(pb_setContentOffset:), @selector(setContentOffset:));
+    PBSwizzleMethod(self, @selector(pb_setContentSize:), @selector(setContentSize:));
 
     // Remove pan gesture handler
     [self.panGestureRecognizer removeTarget:self action:@selector(pb_handlePanGesture:)];
@@ -309,11 +315,11 @@ static const void *kPBInfiniteScrollStateKey = &kPBInfiniteScrollStateKey;
 #pragma mark -
 
 + (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PBSwizzleMethod(self, @selector(setContentOffset:), @selector(pb_setContentOffset:));
-        PBSwizzleMethod(self, @selector(setContentSize:), @selector(pb_setContentSize:));
-    });
+//     static dispatch_once_t onceToken;
+//     dispatch_once(&onceToken, ^{
+//         PBSwizzleMethod(self, @selector(setContentOffset:), @selector(pb_setContentOffset:));
+//         PBSwizzleMethod(self, @selector(setContentSize:), @selector(pb_setContentSize:));
+//     });
 }
 
 #pragma mark - Private methods
